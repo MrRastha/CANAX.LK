@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CANAX CHATBOT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-black text-white">
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="w-64 bg-black border-r border-slate-700 flex flex-col sidebar" id="sidebar">
+            <!-- Logo -->
+            <div class="p-6 border-b border-slate-700 logo-section">
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-blue-700 bg-clip-text text-transparent logo-text">
+                    CANAX AI
+                </h1>
+                <p class="text-xs text-slate-400 mt-1 logo-subtitle">Advanced AI Chatbot</p>
+            </div>
+
+            <!-- API Settings -->
+            <div class="border-t border-slate-700 p-4">
+                <div class="text-center text-slate-400 text-sm">
+                    <p>CANAX WORLD BRAND</p>
+                    <p class="text-xs mt-1">Ready to chat!</p>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="flex-1 flex flex-col bg-black main-chat">
+            <!-- Chat Messages Container -->
+            <div id="chatContainer" class="flex-1 overflow-y-auto p-6 space-y-4 chat-messages">
+                <!-- Welcome Message -->
+                <div class="flex justify-center items-center h-full">
+                    <div class="text-center max-w-md welcome-content">
+                        <div class="mb-4 text-6xl">💬</div>
+                        <h2 class="text-3xl font-bold mb-2">Welcome to CANAX</h2>
+                        <p class="text-slate-400">Your AI-powered conversation assistant. Start typing to begin chatting!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Preview -->
+            <div id="imagePreview" class="border-t border-slate-700 p-4 bg-black hidden">
+                <div class="flex items-center gap-3">
+                    <img id="previewImg" src="" alt="preview" class="h-24 w-24 rounded-lg object-cover border border-slate-600">
+                    <button id="removeImageBtn" class="bg-red-600 hover:bg-red-700 text-white rounded-lg p-2 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="border-t border-slate-700 p-6 bg-black input-area">
+                <div id="imageDropZone" class="mb-3 rounded-lg border border-dashed border-slate-600 bg-black h-24 flex items-center justify-center text-slate-400 hover:border-cyan-400 hover:text-white transition cursor-pointer image-drop-zone">
+                    <div class="text-center">
+                        <p class="font-semibold">Drag images here or click to upload</p>
+                        <p class="text-xs mt-1">Supports image + text in one message</p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Type your message here..."
+                        class="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition message-input"
+                    />
+                    <button
+                        id="sendBtn"
+                        class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold rounded-lg px-6 py-3 transition duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed send-btn"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                        Send
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hidden File Input -->
+            <input type="file" id="fileInput" accept="image/*" class="hidden" />
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+            <div class="bg-slate-800 rounded-lg p-6 w-full max-w-md mx-4 border border-slate-700 modal-content">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-white">Settings</h3>
+                    <button id="closeSettingsBtn" class="text-slate-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="apiKeyInput" class="block text-sm font-medium text-slate-300 mb-2">
+                            OpenRouter API Key
+                        </label>
+                        <input
+                            type="password"
+                            id="apiKeyInput"
+                            placeholder="Enter your OpenRouter API key"
+                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition"
+                        />
+                        <p class="text-xs text-slate-400 mt-1">Get your API key from <a href="https://openrouter.ai/keys" target="_blank" class="text-cyan-400 hover:text-cyan-300">openrouter.ai</a></p>
+                    </div>
+
+                    <div>
+                        <label for="modelInput" class="block text-sm font-medium text-slate-300 mb-2">
+                            Model
+                        </label>
+                        <select
+                            id="modelInput"
+                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition"
+                        >
+                            <option value="stepfun/step-3.5-flash:free">StepFun 3.5 Flash (Free)</option>
+                            <option value="anthropic/claude-3-haiku">Claude 3 Haiku</option>
+                            <option value="anthropic/claude-3-sonnet">Claude 3 Sonnet</option>
+                            <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+                            <option value="openai/gpt-4o">GPT-4o</option>
+                            <option value="google/gemini-pro-1.5">Gemini Pro 1.5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-6">
+                    <button id="saveSettingsBtn" class="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold rounded-lg py-3 transition duration-200">
+                        Save Settings
+                    </button>
+                    <button id="cancelSettingsBtn" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg py-3 transition duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+
+</body>
+</html>
